@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frecuencia Dental — Prep Stream 25/03</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0e0e0f;
+    --surface: #18181b;
+    --surface2: #222226;
+    --border: #2e2e34;
+    --accent: #c8f135;
+    --accent2: #7c3aed;
+    --red: #ff4444;
+    --text: #f0f0ee;
+    --muted: #888884;
+    --mono: 'Space Mono', monospace;
+    --sans: 'DM Sans', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    padding: 40px 24px 80px;
+  }
+
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .brand {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .brand-tag {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .brand-title {
+    font-family: var(--mono);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: -0.02em;
+  }
+
+  .date-block {
+    text-align: right;
+  }
+
+  .date-main {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .date-sub {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+
+  .live-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--red);
+    color: white;
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    padding: 4px 10px;
+    border-radius: 3px;
+    margin-top: 8px;
+  }
+
+  .dot { width: 6px; height: 6px; border-radius: 50%; background: white; animation: blink 1.2s infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .grid-full {
+    grid-column: 1 / -1;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .block-num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--bg);
+    background: var(--accent);
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+  }
+
+  .block-num.fijo { background: #7c3aed; color: white; }
+  .block-num.interactivo { background: #f97316; color: white; }
+  .block-num.opinion { background: #eab308; color: #000; }
+
+  .card-title {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.05em;
+  }
+
+  .time-pill {
+    margin-left: auto;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 3px 8px;
+    border-radius: 20px;
+  }
+
+  label {
+    display: block;
+    font-size: 11px;
+    font-family: var(--mono);
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    margin-top: 14px;
+  }
+
+  label:first-of-type { margin-top: 0; }
+
+  input[type="text"],
+  input[type="url"],
+  textarea {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 14px;
+    padding: 10px 12px;
+    resize: none;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  input[type="text"]:focus,
+  input[type="url"]:focus,
+  textarea:focus {
+    border-color: var(--accent);
+  }
+
+  textarea { line-height: 1.5; }
+
+  .status-row {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+  }
+
+  .checkbox-pill {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: var(--mono);
+    color: var(--muted);
+    transition: all 0.15s;
+    user-select: none;
+  }
+
+  .checkbox-pill input { display: none; }
+
+  .checkbox-pill:has(input:checked) {
+    background: #1a2a0a;
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .check-icon { font-size: 14px; }
+
+  .section-divider {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 24px 0 16px;
+  }
+
+  .section-divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .post-row {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    align-items: start;
+    margin-bottom: 10px;
+  }
+
+  .remove-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 6px;
+    padding: 10px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.15s;
+    margin-top: 0;
+  }
+
+  .remove-btn:hover { border-color: var(--red); color: var(--red); }
+
+  .add-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: 1px dashed var(--border);
+    color: var(--muted);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    padding: 8px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-top: 4px;
+  }
+
+  .add-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .footer-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 32px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border);
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .progress-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .progress-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .progress-bar-wrap {
+    width: 120px;
+    height: 6px;
+    background: var(--surface2);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 3px;
+    transition: width 0.3s;
+  }
+
+  .go-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 12px 24px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+
+  .go-btn:hover { opacity: 0.85; }
+
+  .nota-footer {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--muted);
+    text-align: center;
+    margin-top: 40px;
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; }
+    .grid-full { grid-column: 1; }
+    .header { flex-direction: column; gap: 16px; }
+    .date-block { text-align: left; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="brand">
+    <span class="brand-tag">La Jeringa Triple</span>
+    <span class="brand-title">FRECUENCIA DENTAL</span>
+    <span class="date-sub">Hoja de prep — stream en vivo</span>
+  </div>
+  <div class="date-block">
+    <div class="date-main">25/03</div>
+    <div class="date-sub">Miércoles · 13:00 ARG</div>
+    <div class="live-badge"><span class="dot"></span> KICK</div>
+  </div>
+</div>
+
+<!-- CHECKLIST PRE-STREAM -->
+<div class="section-divider">Checklist pre-stream</div>
+
+<div class="card">
+  <div style="display:flex; flex-wrap:wrap; gap:8px;">
+    <label class="checkbox-pill"><input type="checkbox"><span class="check-icon">✓</span> Audio OK</label>
+    <label class="checkbox-pill"><input type="checkbox"><span class="check-icon">✓</span> Cámara OK</label>
+    <label class="checkbox-pill"><input type="checkbox"><span class="check-icon">✓</span> Intro animada cargada</label>
+    <label class="checkbox-pill"><input type="checkbox"><span class="check-icon">✓</span> QR visible en pantalla</label>
+    <label class="checkbox-pill"><input type="checkbox"><span class="check-icon">✓</span> Posts abiertos en browser</label>
+    <label class="checkbox-pill"><input type="checkbox"><span class="check-icon">✓</span> Modo no molestar activado</label>
+  </div>
+</div>
+
+<!-- TEMA DEL DÍA -->
+<div class="section-divider">Tema y clima del día</div>
+
+<div class="grid">
+  <div class="card grid-full">
+    <div class="card-header">
+      <span class="block-num fijo">INTRO</span>
+      <span class="card-title">PRESENTACIÓN DEL STREAM</span>
+      <span class="time-pill">0:00 – 2:00</span>
+    </div>
+    <label>Frase de apertura (1-2 líneas para presentar el stream de hoy)</label>
+    <textarea rows="2" placeholder="Ej: Hoy arrancamos con un caso que encontré en TikTok que me hizo acordar a algo que vi en la facu..."></textarea>
+    <label>Humor/tono del día</label>
+    <div class="status-row">
+      <label class="checkbox-pill"><input type="radio" name="tono"><span>🔥 Caliente / polémico</span></label>
+      <label class="checkbox-pill"><input type="radio" name="tono"><span>😂 Humor puro</span></label>
+      <label class="checkbox-pill"><input type="radio" name="tono"><span>🤔 Reflexivo / gremio</span></label>
+      <label class="checkbox-pill"><input type="radio" name="tono"><span>😤 Desahogo / queja</span></label>
+    </div>
+  </div>
+</div>
+
+<!-- BLOQUES DE REACCIÓN -->
+<div class="section-divider">Bloques de reacción</div>
+
+<!-- Bloque 1 -->
+<div class="card" style="margin-bottom:16px;">
+  <div class="card-header">
+    <span class="block-num">B1</span>
+    <span class="card-title">EL CONSULTORIO HABLA</span>
+    <span class="time-pill">2:00 – 10:00</span>
+  </div>
+  <label>Link del post / contenido</label>
+  <div class="post-row" id="b1-posts">
+    <input type="url" placeholder="https://x.com/...">
+    <button class="remove-btn" onclick="removeRow(this)">✕</button>
+  </div>
+  <button class="add-btn" onclick="addPost('b1-posts')">+ agregar post</button>
+  <label>Ángulo personal (¿qué te recuerda esto de cuando ejercías?)</label>
+  <textarea rows="2" placeholder="Ej: Esto me pasó exactamente en tercer año cuando..."></textarea>
+</div>
+
+<!-- Bloque 2 -->
+<div class="card" style="margin-bottom:16px;">
+  <div class="card-header">
+    <span class="block-num">B2</span>
+    <span class="card-title">EL GREMIO EN INTERNET</span>
+    <span class="time-pill">10:00 – 22:00</span>
+  </div>
+  <label>Posts a reaccionar (2-3 máx)</label>
+  <div id="b2-posts">
+    <div class="post-row">
+      <input type="url" placeholder="https://www.threads.net/...">
+      <button class="remove-btn" onclick="removeRow(this)">✕</button>
+    </div>
+    <div class="post-row">
+      <input type="url" placeholder="https://www.tiktok.com/...">
+      <button class="remove-btn" onclick="removeRow(this)">✕</button>
+    </div>
+  </div>
+  <button class="add-btn" onclick="addPost('b2-posts')">+ agregar post</button>
+  <label>Hashtags explorados hoy</label>
+  <input type="text" placeholder="facultad de odontología, dentistas, odontólogos...">
+</div>
+
+<!-- Segmento fijo QR -->
+<div class="card" style="margin-bottom:16px; border-color: #f97316;">
+  <div class="card-header">
+    <span class="block-num interactivo">QR</span>
+    <span class="card-title">EL QR HABLA</span>
+    <span class="time-pill">22:00 – 32:00</span>
+  </div>
+  <label>Anécdotas recibidas esta semana (copiá el texto acá)</label>
+  <textarea rows="4" placeholder="1. [pegar anécdota del formulario QR]&#10;2.&#10;3."></textarea>
+  <label>Pregunta disparadora para el chat</label>
+  <input type="text" placeholder="Ej: ¿A alguien más le pasó algo así en la facu?">
+</div>
+
+<!-- Bloque 3 -->
+<div class="card" style="margin-bottom:16px;">
+  <div class="card-header">
+    <span class="block-num">B3</span>
+    <span class="card-title">LO MÁS BIZARRO DE LA SEMANA</span>
+    <span class="time-pill">32:00 – 44:00</span>
+  </div>
+  <label>Post bizarro / cringe / polémico</label>
+  <div class="post-row" id="b3-posts">
+    <input type="url" placeholder="https://...">
+    <button class="remove-btn" onclick="removeRow(this)">✕</button>
+  </div>
+  <button class="add-btn" onclick="addPost('b3-posts')">+ agregar post</button>
+  <label>¿Por qué es bizarro? (una línea para acordarte)</label>
+  <input type="text" placeholder="Ej: Odontólogo motivacional que dice que el dolor es una mentalidad...">
+</div>
+
+<!-- Opinión -->
+<div class="card" style="margin-bottom:16px; border-color: #eab308;">
+  <div class="card-header">
+    <span class="block-num opinion">OP</span>
+    <span class="card-title">LA JERINGA OPINA</span>
+    <span class="time-pill">44:00 – 50:00</span>
+  </div>
+  <label>Tu postura del día (1 idea concreta)</label>
+  <textarea rows="2" placeholder="Ej: El sistema de residencias en odontología está roto porque..."></textarea>
+  <label>Pregunta para el chat (para generar debate)</label>
+  <input type="text" placeholder="Ej: ¿Ustedes creen que vale la pena hacer una especialidad en Argentina?">
+</div>
+
+<!-- Cierre -->
+<div class="card" style="border-color: #7c3aed;">
+  <div class="card-header">
+    <span class="block-num fijo">CIERRE</span>
+    <span class="card-title">DESPEDIDA + PRÓXIMO STREAM</span>
+    <span class="time-pill">50:00 – 55:00</span>
+  </div>
+  <label>Tema del próximo stream (viernes 28/03)</label>
+  <input type="text" placeholder="Ej: Reaccionamos a los peores consejos dentales de TikTok...">
+  <label>Frase de cierre de la marca</label>
+  <input type="text" placeholder="Ej: Hasta el viernes, y recuerden: el gremio somos todos.">
+</div>
+
+<!-- FOOTER -->
+<div class="footer-bar">
+  <div class="progress-section">
+    <span class="progress-label">Prep completada</span>
+    <div class="progress-bar-wrap">
+      <div class="progress-bar-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+    <span class="progress-label" id="progress-text">0%</span>
+  </div>
+  <button class="go-btn" onclick="exportPrep()">
+    <span>▶</span> EXPORTAR PREP
+  </button>
+</div>
+
+<div class="nota-footer">frecuenciadental.lajeringatriple · stream template v1.0</div>
+
+<script>
+function addPost(containerId) {
+  const container = document.getElementById(containerId);
+  const row = document.createElement('div');
+  row.className = 'post-row';
+  row.innerHTML = `<input type="url" placeholder="https://..."><button class="remove-btn" onclick="removeRow(this)">✕</button>`;
+  container.appendChild(row);
+}
+
+function removeRow(btn) {
+  btn.parentElement.remove();
+}
+
+// Progress tracker
+function updateProgress() {
+  const inputs = document.querySelectorAll('input[type="text"], input[type="url"], textarea');
+  let filled = 0;
+  inputs.forEach(i => { if (i.value.trim() !== '') filled++; });
+  const pct = Math.round((filled / inputs.length) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-text').textContent = pct + '%';
+}
+
+document.addEventListener('input', updateProgress);
+
+// Checkboxes also update progress
+document.querySelectorAll('.checkbox-pill input').forEach(cb => {
+  cb.addEventListener('change', updateProgress);
+});
+
+// Export as text summary
+function exportPrep() {
+  let lines = ['FRECUENCIA DENTAL — PREP STREAM 25/03/2026', '=========================================', ''];
+  document.querySelectorAll('.card').forEach(card => {
+    const title = card.querySelector('.card-title');
+    if (title) {
+      lines.push('▸ ' + title.textContent.trim());
+      card.querySelectorAll('textarea, input[type="text"], input[type="url"]').forEach(el => {
+        if (el.value.trim()) lines.push('  → ' + el.value.trim());
+      });
+      lines.push('');
+    }
+  });
+  const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'prep_frecuencia_dental_25marzo.txt';
+  a.click();
+}
+</script>
+</body>
+</html>
